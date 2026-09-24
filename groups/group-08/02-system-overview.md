@@ -6,8 +6,7 @@ Fetch — Paulo
 
 Decode — Jose Vitor
 
-# Micro-ops e Controle Interno
-Após a instrução ser decodificada, a CPU divide a instrução CISC em pequenas operações internas chamadas micro-ops. Essas micro-operações são executadas em sequência para realizar a tarefa completa.
+Micro-ops e Controle Interno — Após a instrução ser decodificada, a CPU divide a instrução CISC em pequenas operações internas chamadas micro-ops. Essas micro-operações são executadas em sequência para realizar a tarefa completa.
 O controle interno é responsável por organizar e controlar essas etapas, enviando sinais para os registradores, memória e ULA (Unidade Lógica e Aritmética).
 
 Exemplo: ADD AX, [1000h]
