@@ -8,7 +8,8 @@ Decode — Jose Vitor
 
 Micro-ops e controle interno  - João Gabriel
 
-Execute — Vitor Hugo
+Execute — As unidades de execução realizam as operações necessárias, como cálculos, movimentação de dados ou acesso à memoria. Como a instrução é complexa, esse processo costuma exigir múltiplos ciclos de clock.
+
 
 No exemplo ADD AX, [1000h], o resultado da soma é colocado em AX.
 
