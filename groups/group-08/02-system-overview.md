@@ -2,7 +2,17 @@
 
 ## 2.1 Ciclo de Execução da CPU
 
-Fetch — Paulo
+Fetch — é um recurso utilizado no ambiente CICS (Customer Information Control System), da IBM, para trabalhar com programas que precisam ser carregados e utilizados durante a execução de uma aplicação. De forma simples, ele está relacionado à obtenção de um programa que está disponível no ambiente CICS para que possa ser utilizado pelo processamento.
+
+No CICS, existem diferentes formas de chamar ou carregar programas. O FETCH está relacionado ao carregamento de um programa de forma dinâmica, permitindo que o programa seja disponibilizado para execução quando necessário, em vez de precisar estar previamente carregado.
+
+Um ponto importante é que FETCH não significa simplesmente “executar outro programa”. Ele está mais relacionado ao processo de disponibilizar o programa para utilização. Depois de carregado, o programa pode ser manipulado ou chamado conforme a lógica da aplicação.
+
+Em resumo, podemos entender o FETCH CICS como um mecanismo que permite localizar e carregar dinamicamente um programa no ambiente CICS, dando à aplicação maior flexibilidade no gerenciamento dos programas durante sua execução.
+
+Exemplo simples: imagine que um sistema bancário possui vários módulos. Em determinado momento, o sistema precisa utilizar um módulo específico que ainda não está carregado. O mecanismo de FETCH pode ser utilizado para disponibilizar esse módulo para o processamento.
+
+Em uma frase: o FETCH CICS permite carregar dinamicamente um programa para que ele possa ser utilizado durante a execução de uma aplicação CICS.
 
 Decode - A decodificação é uma etapa fundamental na arquitetura CISC, pois é responsável por interpretar as instruções recebidas pela CPU. Ela identifica o código da instrução, os registradores envolvidos, os dados e os modos de endereçamento. A partir dessa interpretação, a unidade de controle determina quais operações e sinais de controle devem ser enviados para os componentes do processador. Como a CISC possui muitas instruções e formatos diferentes, essa etapa pode ser mais complexa. Portanto, a decodificação  é essencial para transformar a instrução em ações que a CPU consiga executar corretamente. 
 
