@@ -4,7 +4,8 @@
 
 Fetch — Paulo
 
-Decode — Jose Vitor
+A decodificação é uma etapa fundamental na arquitetura CISC, pois é responsável por interpretar as instruções recebidas pela CPU. Ela identifica o código da instrução, os registradores envolvidos, os dados e os modos de endereçamento. A partir dessa interpretação, a unidade de controle determina quais operações e sinais de controle devem ser enviados para os componentes do processador. Como a CISC possui muitas instruções e formatos diferentes, essa etapa pode ser mais complexa. Portanto, a decodificação  é essencial para transformar a instrução em ações que a CPU consiga executar corretamente. 
+
 
 Micro-ops e Controle Interno — Após a instrução ser decodificada, a CPU divide a instrução CISC em pequenas operações internas chamadas micro-ops. Essas micro-operações são executadas em sequência para realizar a tarefa completa.
 O controle interno é responsável por organizar e controlar essas etapas, enviando sinais para os registradores, memória e ULA (Unidade Lógica e Aritmética).
