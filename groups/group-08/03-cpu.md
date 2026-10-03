@@ -1,29 +1,13 @@
-# 3. CPU
+QP2 - Como a arquitetura CISC organiza e acessa a memória?
 
-## 3.1 Processor Overview
+A arquitetura CISC (Complex Instruction Set Computer) organiza e acessa a memória principal de maneira a maximizar a flexibilidade e otimizar o espaço do código.
 
-## 3.2 Registers
+**Modelo de Organização Linear e Unificada**: A memória principal é tratada como uma sequência linear e contínua de bytes endereçáveis, onde dados e instruções compartilham o mesmo espaço físico de endereçamento.
 
-## 3.3 ALU
+**Modos de Endereçamento Complexos**: Oferece grande variedade de formas para localizar dados (direto, indireto, indexado e base-índice), facilitando o acesso eficiente a estruturas complexas e vetores (arrays) na memória.
 
-## 3.4 Control Unit
+**Operações Register-to-Memory**: Diferente de arquiteturas mais simples, o CISC permite que uma única instrução busque dados diretamente da memória, execute o processamento aritmético/lógico e grave o resultado de volta na memória, sem exigir comandos intermediários de leitura e escrita.
 
-## 3.5 Clock
+**Suporte Nativo a Pilha e Organização de Bytes**: Conta com instruções dedicadas no hardware (como PUSH e POP) para gerenciar sub-rotinas e alocação automática na pilha, utilizando habitualmente o formato de armazenamento Little Endian para os bytes.
 
-## 3.6 Instruction Cycle
-
-Explain
-
-Fetch
-
-Decode
-
-Execute
-
-## 3.7 CPU Diagram
-
-(Add image)
-
-## 3.8 Advantages
-
-## 3.9 Limitations
+Fontes: Livro: Arquitetura e Organização de Computadores: Projetando para o Desempenho — William Stallings e  Instituto de Matemática e Estatística da USP (IME-USP) Arquitetura de Computadores - https://eaulas.usp.br/portal/course.action?course=33377
