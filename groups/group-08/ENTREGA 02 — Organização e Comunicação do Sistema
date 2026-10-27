@@ -56,9 +56,104 @@ Gargalo de Desempenho (Memory Wall): A dependência de acessos frequentes à mem
 Ineficiência de Pipeline: Devido à variabilidade no tamanho e no tempo de execução das instruções, implementar pipelines profundos e eficientes é consideravelmente mais complexo do que em arquiteturas reduzidas (RISC).
 
 ---
-##  Diagrama do CISC mostrando os principais componentes e suas conexões.
+##  Diagrama do CISC mostrando os principais componentes e suas conexões(Não consegui colar imagem no GitHub).
 
 
+
+                    ARQUITETURA CISC
+             Principais componentes e conexões
+
+
+   +------------------------------------------------+
+   |              MEMÓRIA PRINCIPAL (RAM)            |
+   |                                                |
+   |       Armazena programas, instruções e dados    |
+   +------------------------+-----------------------+
+                            |
+                            |
+   ==================================================
+       BARRAMENTOS DE DADOS, ENDEREÇOS E CONTROLE
+   ==================================================
+        |                   |                   |
+        | Dados             | Endereços         | Controle
+        |                   |                   |
+   +----v-------------------------------------------v----+
+   |                  PROCESSADOR CISC                   |
+   |                                                     |
+   |  +-----------------------------------------------+  |
+   |  |             UNIDADE DE CONTROLE (UC)          |  |
+   |  |                                               |  |
+   |  |  • Busca e decodifica instruções              |  |
+   |  |  • Coordena a execução das operações         |  |
+   |  |  • Pode utilizar microprogramação             |  |
+   |  +----------------------+------------------------+  |
+   |                         |                           |
+   |              Interconexões internas                |
+   |                         |                           |
+   |       +-----------------+----------------+          |
+   |       |                 |                |          |
+   |  +----v--------+  +-----v------+  +------v-------+  |
+   |  | BANCO DE    |  | ULA / ALU  |  | CACHE E MMU |  |
+   |  | REGISTRADORES|  |            |  |             |  |
+   |  |             |  | Operações  |  | Cache:      |  |
+   |  | Armazena    |  | aritméticas|  | acelera o   |  |
+   |  | dados,      |  | e lógicas  |  | acesso à    |  |
+   |  | endereços e |  |            |  | memória     |  |
+   |  | resultados  |  |            |  |             |  |
+   |  +------+------+  +------+-----+  | MMU:        |  |
+   |         |                |        | gerencia    |  |
+   |         +----------------+        | endereços e |  |
+   |          Troca de dados           | proteção    |  |
+   |                                   +------+------+\ |
+   |                                          |        |
+   |  +---------------------------------------v-----+  |
+   |  |          INTERCONEXÕES INTERNAS             |  |
+   |  | Conectam registradores, ULA, cache e demais  |  |
+   |  | unidades do processador.                    |  |
+   |  +---------------------------------------------+  |
+   +-------------------------+---------------------------+
+                             |
+                             |
+                Barramentos e interfaces de E/S
+                             |
+           +-----------------v-----------------+
+           |  CONTROLADORES DE ENTRADA E SAÍDA  |
+           |                                    |
+           |  Gerenciam a comunicação com os    |
+           |  dispositivos periféricos          |
+           +-----------------+------------------+
+                             |
+             +---------------+---------------+
+             |               |               |
+        +----v----+     +----v----+     +----v--------+
+        | TECLADO |     | MONITOR |     | ARMAZENAMENTO|
+        +---------+     +---------+     +-------------+
+                                              |
+                                        +-----v-----+
+                                        | REDE /    |
+                                        | OUTROS    |
+                                        | PERIFÉRICOS|
+                                        +-----------+
+
+
+             FLUXO GERAL DE FUNCIONAMENTO
+
+  1. BUSCA:
+     A instrução é obtida da memória.
+
+  2. DECODIFICAÇÃO:
+     A Unidade de Controle interpreta a instrução.
+
+  3. EXECUÇÃO:
+     Os registradores fornecem dados e a ULA ou outra
+     unidade realiza a operação solicitada.
+
+  4. ARMAZENAMENTO:
+     O resultado é guardado em registradores ou memória.
+
+  5. ENTRADA E SAÍDA:
+     Quando necessário, os resultados são enviados
+     aos periféricos por controladores e interfaces.
 
 
 
