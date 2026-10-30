@@ -4,10 +4,7 @@
 |---|---|
 | **Objeto estudado** | Arquitetura CISC (exemplos: IBM System/360 Model 85, DEC VAX-11/780, Intel x86/x86-64) |
 | **Entrega** | 05 — Acesso aos Dados e Fluxo de Informação |
-
-
-## Resumo
-
+---
 Em máquinas CISC, os dados chegam às unidades de processamento por **operandos de diferentes origens**: registradores, constantes dentro da instrução e **memória**, que pode ser lida ou escrita diretamente pela instrução. Por isso o caminho **memória → processamento → memória** é parte normal da execução, e a organização do acesso à memória (cache, buffers, tradução de endereços, entrelaçamento) define o desempenho. As três máquinas estudadas mostram três etapas dessa evolução: o **System/360 Model 85** introduziu o **cache** como nível transparente ao programa; o **VAX-11/780** combinou **buffer de instruções, TB, cache e buffer de escrita** com execução microcodificada; e o **x86 atual** acrescenta **vários níveis de cache, execução fora de ordem e tradução em micro-operações**.
 ---
 ## 1. De onde vêm os dados
