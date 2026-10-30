@@ -222,5 +222,3 @@ Fluxo de entrada de programa e configuração: operador → console LSI-11 → d
 | 3 | DEC. *VAX Architecture Handbook* (1981). [Link](https://50anni.informatica.unisa.it/wp-content/uploads/2023/02/02-VAX-architecture-handbook-1981.pdf) | Seções 1, 3 |
 | 4 | Datapro. *DEC VAX-11/780* (1978). [Link](https://ftp.mirrorservice.org/sites/www.bitsavers.org/pdf/datapro/datapro_reports_70s-90s/DEC/M11-384-40_7805_DEC_VAX-11_780.pdf) | Seções 6, 8 |
 | 5 | Intel. *Intel 64 and IA-32 Architectures Software Developer’s Manual*. [Link](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html) | Seções 1, 2, 3, 8, 9.2 |
-
-> **Nota:** localizei os documentos pelos links acima, mas não conferi página por página. Antes da versão final, confirme nos manuais os detalhes do IPL, dos endereços fixos (CAW 72, CSW 64, PSWs de E/S em 56 e 120) e dos níveis de IPL do VAX. O código do 9.1 e do 9.2 é ilustrativo.
