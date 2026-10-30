@@ -4,14 +4,12 @@
 |---|---|
 | **Objeto estudado** | Arquitetura CISC (exemplos: IBM System/360, DEC VAX-11/780, Intel x86/x86-64) |
 | **Entrega** | 05 — Entrada, Saída e Interação com o Ambiente |
-| **Issues relacionadas** | `#__` (preencher: issues anteriores sobre CISC e armazenamento) |
-| **Status** | Pronto para revisão |
-
-
+| **Issues relacionadas** | `#3`|
+---
 ## Resumo
 
 Nas máquinas CISC, a E/S evoluiu em três modelos. No **System/360**, a CPU **inicia** a operação com uma única instrução (`SIO`) e um **canal**, que é um processador de E/S, executa um programa de canal sozinho e avisa o fim por **interrupção**. No **VAX**, os registradores dos dispositivos aparecem no espaço de endereços e são acessados por instruções comuns, com adaptadores (UNIBUS/MASSBUS) movendo dados para a memória. No **x86**, coexistem **portas de E/S** (`IN`/`OUT`), **E/S mapeada em memória**, **DMA** e **interrupções** (APIC/MSI). O operador humano participa pelo console, pelo teclado e pelos meios de carga (cartões, floppy, firmware).
-
+---
 ## 1. Como dados são fornecidos ao sistema
 
 | Arquitetura | Como os dados entram |
@@ -29,14 +27,14 @@ Nas máquinas CISC, a E/S evoluiu em três modelos. No **System/360**, a CPU **i
 | System/360 | Programas e dados chegam em **baralhos de cartões**, fita ou disco. A carga inicial é o **IPL**: o operador escolhe nas chaves do painel o endereço do dispositivo de carga e aciona **LOAD**; o hardware lê o primeiro registro do dispositivo para o início da memória, executa os comandos de carga lidos e passa o controle ao programa. A descrição do trabalho vai em cartões de controle (JCL). |
 | VAX-11/780 | O **console** é um microcomputador **LSI-11** com disquete (RX01) e terminal. O disquete carrega microcódigo na memória de controle e inicia o *bootstrap*; depois o sistema operacional é lido do disco. Ver [Hardware User’s Guide](https://mirrorservice.org/sites/www.bitsavers.org/pdf/dec/vax/780/EK-11780-UG-001_VAX-11_780_Hardware_Users_Guide_197902.pdf). |
 | x86 / x86-64 | O **firmware** (BIOS/UEFI, em flash) inicializa o hardware e carrega o sistema de disco, USB ou rede. As opções de plataforma são editadas no *setup* do firmware. Atualizações de microcódigo são aplicadas na inicialização (ver [Intel SDM](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html)). Dispositivos PCI são configurados pelo **espaço de configuração PCI**. |
-
+---
 ## 3. Como os resultados são obtidos
 
 - **Resultado interno:** fica em registradores, flags e memória (ver Entrega 04). Só se torna visível ao ambiente por uma operação de saída.
 - **System/360:** o programa emite um CCW de **escrita** (`WRITE`, código `X'01'`) para impressora, perfuradora de cartões, fita, disco ou console. Ao terminar, o canal grava o **CSW** (palavra de estado do canal, no endereço 64) e gera uma **interrupção de E/S**.
 - **VAX:** o programa grava em registradores do controlador ou em buffers; o fim da operação é sinalizado por **interrupção** tratada pelo SO (vetor no *System Control Block*, com níveis de prioridade IPL de 0 a 31).
 - **x86:** o driver grava em portas/MMIO ou prepara descritores para DMA; o dispositivo avisa o fim por **interrupção** (local APIC, I/O APIC ou MSI).
-
+---
 ## 4. Dispositivos e mecanismos utilizados
 
 | Arquitetura | Dispositivos típicos | Mecanismos |
@@ -44,17 +42,17 @@ Nas máquinas CISC, a E/S evoluiu em três modelos. No **System/360**, a CPU **i
 | System/360 | Leitora e perfuradora de cartões, impressora de linha, fita magnética, disco, máquina de escrever do console | Canais (seletor e multiplexador), CCW, CAW, CSW, interrupção |
 | VAX-11/780 | Discos e fitas (MASSBUS), terminais e periféricos (UNIBUS), console LSI-11, disquete | Adaptadores UBA/MBA, registradores no espaço de E/S, interrupções por vetor |
 | x86-64 | Teclado, mouse, disco/SSD, placa de rede, vídeo, USB | Portas, MMIO, DMA, APIC/MSI, PCI/PCIe |
-
+---
 ## 5. Participação humana
 
 - **System/360:** o operador prepara os baralhos, monta fitas e discos, escolhe o dispositivo de IPL, aciona LOAD e usa o console para comandos e mensagens do sistema. O programador entrega cartões e recebe o relatório impresso.
 - **VAX-11/780:** o operador usa o terminal do console (LSI-11) para ligar, carregar o *bootstrap* e comandar o sistema.
 - **x86:** o usuário interage por teclado, mouse e tela. O administrador usa o *setup* do firmware. O restante (DMA, interrupções, atualização de microcódigo) é automático.
-
+---
 ## 6. Interfaces externas
 
 No VAX-11/780, as interfaces externas são barramentos com adaptadores dedicados, mais o console independente. A figura resume a organização. Em configurações-padrão da época, havia um adaptador UNIBUS integral ao processador, e o relatório [Datapro](https://ftp.mirrorservice.org/sites/www.bitsavers.org/pdf/datapro/datapro_reports_70s-90s/DEC/M11-384-40_7805_DEC_VAX-11_780.pdf) indica taxa máxima agregada de **1,5 MB/s** pelo UNIBUS.
-
+---
 **Figura 1 — Interfaces de E/S do VAX-11/780 (simplificado)**
 
 ```mermaid
@@ -83,7 +81,7 @@ flowchart TB
   classDef out fill:#FDE8D0,stroke:#57606A,color:#1F2328
   classDef dev fill:#EEF0F2,stroke:#57606A,color:#1F2328
 ```
-
+---
 ## 7. Mecanismos automáticos e manuais
 
 | Arquitetura | Manual | Automático |
@@ -91,7 +89,7 @@ flowchart TB
 | System/360 | Chaves e botão LOAD do painel, troca de cartões/fitas, comandos no console | Programa de canal (CCW), transferência de dados, interrupção de fim de operação |
 | VAX-11/780 | Comandos no console LSI-11, troca de disquete | Adaptadores UBA/MBA, interrupções vetoradas, *bootstrap* |
 | x86-64 | Setup do firmware, escolha de dispositivo de boot | DMA, interrupções, enumeração de dispositivos PCI, microcódigo |
-
+---
 ## 8. Limitações do processo de entrada e saída
 
 - **Instruções de E/S são privilegiadas.** No System/360, `SIO`, `TIO`, `HIO` e `TCH` só rodam em estado supervisor; programas de aplicação pedem E/S ao sistema operacional (`SVC`). No x86, `IN`/`OUT` exigem privilégio suficiente (nível de privilégio ≤ IOPL ou permissão no *I/O permission bitmap* do TSS).
@@ -101,7 +99,7 @@ flowchart TB
 - **Espaço de portas do x86.** São 65.536 portas (64 KiB). Portas são endereçadas à parte da memória, e MMIO exige memória **não cacheável** para o dispositivo ver cada acesso.
 - **Latência de interrupção e de acesso.** Cada acesso a dispositivo é mais lento que a RAM, e o tratamento de interrupção tem custo (salvar estado, trocar de contexto).
 - **Segurança do DMA.** Um dispositivo com DMA pode escrever em qualquer endereço, a menos que haja mecanismo de proteção (IOMMU).
-
+---
 ## 9. Representação: fluxo entrada → processamento/interação → saída
 
 ### 9.1 Exemplo 1 — System/360: ler cartões, processar e imprimir
@@ -211,7 +209,7 @@ flowchart TB
         mov   ecx, 256
         rep insw                ; uma instrução, 256 transferências
 ```
-
+---
 ### 9.3 Exemplo 3 — VAX-11/780: inicialização pelo console
 
 Fluxo de entrada de programa e configuração: operador → console LSI-11 → disquete (microcódigo e *bootstrap*) → memória de controle e memória principal → sistema operacional lido do disco pelo MASSBUS → sistema pronto, com terminais e periféricos ativos. Os componentes aparecem na figura da seção 6.
