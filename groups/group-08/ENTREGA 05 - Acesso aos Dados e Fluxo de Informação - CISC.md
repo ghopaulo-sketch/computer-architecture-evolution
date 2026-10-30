@@ -4,7 +4,7 @@
 |---|---|
 | **Objeto estudado** | Arquitetura CISC (exemplos: IBM System/360 Model 85, DEC VAX-11/780, Intel x86/x86-64) |
 | **Entrega** | 05 — Acesso aos Dados e Fluxo de Informação |
-|
+
 
 ## Resumo
 
