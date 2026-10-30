@@ -4,15 +4,12 @@
 |---|---|
 | **Objeto estudado** | Arquitetura CISC (exemplos: IBM System/360 Model 85, DEC VAX-11/780, Intel x86/x86-64) |
 | **Entrega** | 05 — Acesso aos Dados e Fluxo de Informação |
-| **Issues relacionadas** | `#__` (preencher: issues anteriores sobre CISC, armazenamento e E/S) |
-| **Status** | Pronto para revisão |
-
-> **Escopo:** o conceito de CISC não é repetido (já tratado em issues anteriores). O texto responde aos oito itens da tarefa e traz a representação do caminho dos dados com diagramas e exemplos. As fontes estão no final.
+|
 
 ## Resumo
 
 Em máquinas CISC, os dados chegam às unidades de processamento por **operandos de diferentes origens**: registradores, constantes dentro da instrução e **memória**, que pode ser lida ou escrita diretamente pela instrução. Por isso o caminho **memória → processamento → memória** é parte normal da execução, e a organização do acesso à memória (cache, buffers, tradução de endereços, entrelaçamento) define o desempenho. As três máquinas estudadas mostram três etapas dessa evolução: o **System/360 Model 85** introduziu o **cache** como nível transparente ao programa; o **VAX-11/780** combinou **buffer de instruções, TB, cache e buffer de escrita** com execução microcodificada; e o **x86 atual** acrescenta **vários níveis de cache, execução fora de ordem e tradução em micro-operações**.
-
+---
 ## 1. De onde vêm os dados
 
 | Origem | Descrição |
@@ -22,7 +19,7 @@ Em máquinas CISC, os dados chegam às unidades de processamento por **operandos
 | Memória principal | Variáveis, vetores, pilha e tabelas do sistema. Instruções CISC podem usá-la diretamente como operando. |
 | Tabelas de tradução de endereços | Tabelas de páginas lidas pelo hardware ou pelo microcódigo (VAX e x86) para converter endereços virtuais em físicos. |
 | Armazenamento externo e E/S | Disco, fita, rede. Chegam à memória por canais (System/360) ou por DMA (VAX e x86) antes de serem processados. |
-
+---
 ## 2. Como os dados chegam às unidades de processamento
 
 | Arquitetura | Caminho até a unidade de execução |
@@ -32,7 +29,7 @@ Em máquinas CISC, os dados chegam às unidades de processamento por **operandos
 | x86 / x86-64 | A instrução é decodificada em **micro-operações**. Uma unidade de geração de endereço calcula `base + índice×escala + deslocamento`, o **TLB** traduz o endereço e o dado vem do **cache L1**, de L2/L3 ou da DRAM. |
 
 **Traço CISC:** o cálculo de endereço faz parte da própria instrução (modos de endereçamento ricos). Uma única instrução pode gerar vários acessos à memória, como mostram os exemplos da seção 9.
-
+---
 ## 3. Onde resultados intermediários são mantidos
 
 | Local | Uso |
@@ -43,7 +40,7 @@ Em máquinas CISC, os dados chegam às unidades de processamento por **operandos
 | Pilha na memória | Parâmetros, endereços de retorno e variáveis locais (VAX e x86; o System/360 usa áreas de salvamento e registrador de ligação). |
 | Buffers de escrita | Guardam a escrita pendente enquanto a execução continua: 4 bytes no VAX-11/780, uma instrução de escrita pendente no Model 85 e *store buffer* no x86. |
 | Registradores físicos (x86) | Arquivo de registradores maior que o visível ao programa, usado para renomeação e execução fora de ordem. |
-
+---
 ## 4. Como ocorre a movimentação das informações
 
 | Arquitetura | Unidade de transferência | Política de escrita |
@@ -55,7 +52,7 @@ Em máquinas CISC, os dados chegam às unidades de processamento por **operandos
 - **Leitura:** a CPU consulta primeiro o nível mais próximo. Em caso de falha, o bloco ou a linha é buscado no nível seguinte e instalado no cache.
 - **Escrita:** vai ao buffer de escrita e, conforme a política, ao cache e/ou à memória.
 - **E/S:** no Model 85, o canal lê direto da memória principal (sem usar o cache) e suas escritas são tratadas como as da CPU, atualizando o cache se o dado estiver presente. Isso mantém o conteúdo coerente. No x86, o DMA dos dispositivos normalmente é coerente com os caches.
-
+---
 ## 5. Ordem ou prioridade dos acessos
 
 | Arquitetura | Regras de ordem e prioridade |
@@ -63,7 +60,7 @@ Em máquinas CISC, os dados chegam às unidades de processamento por **operandos
 | System/360 Model 85 | Em falha de leitura, o módulo de memória que contém os **16 bytes pedidos é acessado primeiro** e o dado segue direto à CPU, sem esperar o bloco inteiro. Escritas não provocam carga de bloco nem trocam setor do cache. |
 | VAX-11/780 | A decodificação da instrução seguinte só começa **depois que a anterior termina**. Em falha de leitura de dados, a EBOX **para** (*read stall*; no caso mais simples, 6 ciclos). Em falha na busca de instrução, a EBOX continua até precisar dos bytes. Só a EBOX escreve dados. Uma segunda escrita antes de a anterior terminar causa *write stall*. |
 | x86 / x86-64 | O processador executa fora de ordem, mas os efeitos visíveis seguem o **modelo de ordenação de memória**: leituras não passam outras leituras, escritas não passam outras escritas, e uma leitura pode passar uma escrita anterior a outro endereço (por causa do *store buffer*). Instruções `LOCK`, `XCHG` e *fences* (`MFENCE`, `LFENCE`, `SFENCE`) impõem ordem adicional. |
-
+---
 ## 6. Existência de níveis de armazenamento
 
 | Arquitetura | Níveis (do mais rápido ao mais lento) |
@@ -74,7 +71,7 @@ Em máquinas CISC, os dados chegam às unidades de processamento por **operandos
 | x86-64 | Registradores → **L1 (instruções e dados)** → **L2** → **L3** → DRAM → SSD/HDD. Ao lado: TLBs, cache de micro-ops e *store buffer*. |
 
 O Model 85 foi a primeira máquina da linha System/360 a ter cache. O cache não é endereçável pelo programa: o hardware decide sozinho o que manter, e o programa vê só a memória principal.
-
+---
 ## 7. Mecanismos utilizados para acelerar acessos
 
 | Mecanismo | Onde aparece | Efeito |
@@ -89,7 +86,7 @@ O Model 85 foi a primeira máquina da linha System/360 a ter cache. O cache não
 | Operandos em registradores e literais curtos | VAX | Evitam acessos à memória (41% dos especificadores são registradores) |
 | Execução fora de ordem, renomeação, predição de desvios, cache de micro-ops | x86 | Escondem a latência de memória e mantêm a unidade de execução ocupada |
 | Pré-busca de dados e escrita não temporal | x86 (`PREFETCH`, `MOVNT*`) | Trazem dados antes do uso ou evitam poluir o cache |
-
+---
 ## 8. Limitações ou gargalos
 
 - **Velocidade da memória principal:** no Model 85, a memória (1,04 µs) era cerca de 13 vezes mais lenta que o ciclo do processador (80 ns), motivo da adoção do cache. A diferença entre CPU e DRAM continua e é o gargalo central no x86 atual.
@@ -100,7 +97,7 @@ O Model 85 foi a primeira máquina da linha System/360 a ter cache. O cache não
 - **Desalinhamento:** operandos que cruzam a fronteira do cache exigem dois acessos físicos (0,016 por instrução no VAX).
 - **Várias instruções, vários acessos:** operandos em memória e modos de endereçamento complexos geram mais de um acesso por instrução e dificultam o pipeline.
 - **Coerência entre núcleos (x86):** dados compartilhados entre núcleos exigem protocolos de coerência, que acrescentam latência.
-
+---
 ## 9. Representação: caminho percorrido pelos dados
 
 A figura 1 resume o caminho geral. As figuras seguintes mostram o caminho real em cada máquina, seguidas de exemplos de instrução.
@@ -215,20 +212,7 @@ Ela pega um valor que está na memória, soma com o conteúdo do registrador EAX
 4. **Guarda o resultado:** a escrita passa pelo *store buffer* e é encaminhada ao cache; posteriormente, conforme a política de cache, chega à memória principal.
 
 **Em resumo:** essa instrução faz **uma leitura e uma escrita de dados no mesmo endereço da memória**. O valor de EAX é usado na soma, mas não é alterado.
-
-## Checklist da entrega
-
-- [x] De onde vêm os dados (seção 1)
-- [x] Como chegam às unidades de processamento (seção 2)
-- [x] Onde resultados intermediários são mantidos (seção 3)
-- [x] Como ocorre a movimentação das informações (seção 4)
-- [x] Ordem ou prioridade dos acessos (seção 5)
-- [x] Existência de níveis de armazenamento (seção 6)
-- [x] Mecanismos para acelerar acessos (seção 7)
-- [x] Limitações ou gargalos (seção 8)
-- [x] Representação do caminho dos dados, com diagramas e exemplos (seção 9)
-- [x] Fontes com link (abaixo)
-
+---
 ## Fontes
 
 | # | Referência | Usada em |
@@ -238,5 +222,3 @@ Ela pega um valor que está na memória, soma com o conteúdo do registrador EAX
 | 3 | IBM. *System/360 Principles of Operation* (A22-6821). [Link](https://ftp.mirrorservice.org/sites/www.bitsavers.org/pdf/ibm/360/princOps/A22-6821-6_360PrincOpsJan67.pdf) | Seções 2, 3, 9.1 |
 | 4 | Intel. *Intel 64 and IA-32 Architectures Software Developer’s Manual*. [Link](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html) | Seções 2, 3, 4, 5, 7, 9.3 |
 | 5 | DREPPER, U. *What Every Programmer Should Know About Memory*. 2007. [Link](http://www.akkadia.org/drepper/cpumemory.pdf) | Seções 4, 6, 7, 8, 9.3 |
-
-> **Nota:** os números do System/360 Model 85 vêm do artigo de Liptay (simulações de 1968). Os do VAX-11/780 são médias medidas em carga de *time-sharing* sob VMS. Os valores do x86 (linha de 64 bytes, políticas de cache, ordenação de memória) são típicos e variam por modelo. Conferir página e edição exata antes da versão final.
