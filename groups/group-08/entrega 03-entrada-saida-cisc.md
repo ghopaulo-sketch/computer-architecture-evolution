@@ -7,7 +7,6 @@
 | **Issues relacionadas** | `#__` (preencher: issues anteriores sobre CISC e armazenamento) |
 | **Status** | Pronto para revisão |
 
-> **Escopo:** o conceito de CISC não é repetido (já tratado em issues anteriores). O texto responde aos oito itens da tarefa e traz fluxos **entrada → processamento/interação → saída** com exemplos e diagramas.
 
 ## Resumo
 
@@ -216,20 +215,7 @@ flowchart TB
 ### 9.3 Exemplo 3 — VAX-11/780: inicialização pelo console
 
 Fluxo de entrada de programa e configuração: operador → console LSI-11 → disquete (microcódigo e *bootstrap*) → memória de controle e memória principal → sistema operacional lido do disco pelo MASSBUS → sistema pronto, com terminais e periféricos ativos. Os componentes aparecem na figura da seção 6.
-
-## Checklist da entrega
-
-- [x] Como dados são fornecidos (seção 1)
-- [x] Como programas, instruções e configurações são inseridos (seção 2)
-- [x] Como os resultados são obtidos (seção 3)
-- [x] Dispositivos e mecanismos (seção 4)
-- [x] Participação humana (seção 5)
-- [x] Interfaces externas (seção 6)
-- [x] Mecanismos automáticos e manuais (seção 7)
-- [x] Limitações (seção 8)
-- [x] Fluxo entrada → processamento → saída com exemplos e diagramas (seção 9)
-- [x] Fontes com link (abaixo)
-
+---
 ## Fontes
 
 | # | Referência | Usada em |
