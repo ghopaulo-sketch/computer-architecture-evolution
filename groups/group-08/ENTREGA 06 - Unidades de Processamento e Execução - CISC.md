@@ -3,7 +3,7 @@
 | Campo | Descrição |
 |---|---|
 | **Objeto estudado** | Arquitetura CISC (exemplo: Intel x86/x86-64) |
-| **Tema** | Processamento: unidades, operações, registradores, sincronização, paralelismo e limitações |
+| **Entrega** | 06 - Processamento: unidades, operações, registradores, sincronização, paralelismo e limitações |
 ---
 ## Resumo
 
