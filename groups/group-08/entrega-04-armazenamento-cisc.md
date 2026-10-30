@@ -4,11 +4,7 @@
 |---|---|
 | **Objeto estudado** | Arquitetura CISC (exemplos: IBM System/360, DEC VAX, Intel x86/x86-64) |
 | **Entrega** | 04 — Armazenamento e Organização da Informação |
-| **Issues relacionadas** | `#__` (preencher: issues anteriores com a definição de CISC) |
-| **Status** | Pronto para revisão |
-
-> **Escopo:** esta entrega não repete o conceito de CISC (já tratado em issues anteriores). Ela responde somente aos oito itens pedidos na tarefa.
-
+---
 ## Resumo
 
 Em máquinas CISC, os dados ficam em **registradores (poucos)** e na **memória principal**, e as instruções podem operar diretamente sobre operandos na memória. Programas ficam na RAM (modelo de programa armazenado), enquanto o **comportamento das instruções** fica em uma **memória de controle (microcódigo)**. A configuração do sistema é mantida em registradores especiais e em tabelas na RAM. O armazenamento permanente é externo à CPU e só chega às instruções via RAM e sistema operacional.
@@ -24,7 +20,7 @@ Em máquinas CISC, os dados ficam em **registradores (poucos)** e na **memória 
 | Pilha | Sem pilha em hardware (áreas de salvamento + registrador de ligação) | Pilha em RAM (SP), usada por CALLS/CALLG/RET | Pilha em RAM (RSP), usada por PUSH/POP/CALL/RET |
 
 **Característica CISC:** instruções aceitam operandos diretamente na memória (S/360 e x86: registrador-memória; VAX: até memória-memória), então a RAM faz parte do caminho normal de execução de uma instrução, e não só de carga e armazenamento.
-
+---
 ## 2. Onde programas, instruções e configurações são mantidos
 
 - **Programas do usuário:** na RAM (instruções e dados no mesmo espaço), carregados do armazenamento secundário.
@@ -37,7 +33,7 @@ Em máquinas CISC, os dados ficam em **registradores (poucos)** e na **memória 
 | System/360 | PSW (estado atual) e áreas fixas no início da memória, onde ficam os PSWs de interrupção |
 | VAX | PSL e registradores internos do processador (acessados por `MTPR`/`MFPR`); tabelas de páginas na RAM |
 | x86-64 | Registradores de controle (`CR0`, `CR3`, `CR4`), MSRs (`RDMSR`/`WRMSR`), `GDT`/`IDT` e tabelas de páginas na RAM; opções de plataforma em CMOS/NVRAM ou variáveis UEFI |
-
+---
 ## 3. Armazenamento temporário
 
 | Nível | Função | Tecnologia |
@@ -48,7 +44,7 @@ Em máquinas CISC, os dados ficam em **registradores (poucos)** e na **memória 
 | Caches L1/L2/L3 | Reduzir o tempo de acesso à RAM | SRAM |
 | Cache de micro-ops (x86 moderno) | Guarda instruções CISC já traduzidas em micro-operações | SRAM |
 | RAM | Programas e dados em execução, pilha, tabelas | Núcleo magnético → DRAM |
-
+---
 ## 4. Armazenamento permanente
 
 - **ROM/flash:** firmware, bootloader e microcódigo-base.
@@ -56,7 +52,7 @@ Em máquinas CISC, os dados ficam em **registradores (poucos)** e na **memória 
 - **Armazenamento secundário:** fitas, cartões e discos nas máquinas clássicas; HDD/SSD hoje.
 
 O armazenamento permanente **não é endereçável** pelas instruções comuns da CPU: os dados são trazidos para a RAM por E/S e pelo sistema operacional.
-
+---
 ## 5. Tecnologias utilizadas
 
 | Tecnologia | Uso | Característica |
@@ -67,7 +63,7 @@ O armazenamento permanente **não é endereçável** pelas instruções comuns d
 | DRAM | Memória principal atual | Densa, mais lenta, exige refresh |
 | Flash (NOR/NAND) | Firmware e SSD | Não volátil |
 | Magnética (disco/fita) | Armazenamento secundário | Grande capacidade, acesso lento |
-
+---
 ## 6. Capacidade
 
 | Máquina | Espaço de endereçamento | Observação |
@@ -77,7 +73,7 @@ O armazenamento permanente **não é endereçável** pelas instruções comuns d
 | x86-64 | 48 bits virtuais (256 TiB) ou 57 bits com paginação de 5 níveis | Endereço físico limitado pelo modelo de CPU |
 
 Caches e registradores têm tamanho que **varia por modelo**; consultar a documentação do processador específico antes de citar números.
-
+---
 ## 7. Velocidade e limitações de acesso
 
 Ordem de grandeza medida por Drepper (2007) em um Pentium M: **~3 ciclos (L1)**, **~14 ciclos (L2)** e **~240 ciclos (RAM)**. Valores atuais diferem, mas a proporção entre os níveis se manteve. Ver [Drepper](http://www.akkadia.org/drepper/cpumemory.pdf).
@@ -89,7 +85,7 @@ Ordem de grandeza medida por Drepper (2007) em um Pentium M: **~3 ciclos (L1)**,
 - Instruções de tamanho variável dificultam a busca e a decodificação.
 - Dados e instruções disputam o mesmo caminho até a memória (gargalo de von Neumann).
 - O descompasso entre CPU e DRAM torna a hierarquia de caches indispensável.
-
+---
 ## 8. Relação entre armazenamento e funcionamento
 
 1. **Densidade de código:** instruções complexas fazem mais por instrução e ocupam menos da memória, que era cara.
@@ -97,19 +93,7 @@ Ordem de grandeza medida por Drepper (2007) em um Pentium M: **~3 ciclos (L1)**,
 3. **Ciclo de execução:** busca na RAM → decodificação (microcódigo ou micro-ops) → execução com registradores e cache como intermediários.
 4. **Estado do sistema:** registradores de estado/controle e tabelas na RAM definem modo de operação, proteção e memória virtual.
 5. **Evolução:** o x86 moderno mantém a interface CISC, mas executa micro-ops internamente com arquivo de registradores físicos e caches.
-
-## Checklist da entrega
-
-- [x] Onde os dados são mantidos (seção 1)
-- [x] Onde programas, instruções e configurações são mantidos (seção 2)
-- [x] Armazenamento temporário (seção 3)
-- [x] Armazenamento permanente (seção 4)
-- [x] Tecnologias utilizadas (seção 5)
-- [x] Capacidade (seção 6)
-- [x] Velocidade e limitações de acesso (seção 7)
-- [x] Relação entre armazenamento e funcionamento (seção 8)
-- [x] Fontes com link (abaixo)
-
+---
 ## Fontes
 
 | # | Referência | Usada em |
@@ -118,5 +102,3 @@ Ordem de grandeza medida por Drepper (2007) em um Pentium M: **~3 ciclos (L1)**,
 | 2 | IBM. *System/360 Principles of Operation* (A22-6821). [Link](https://ftp.mirrorservice.org/sites/www.bitsavers.org/pdf/ibm/360/princOps/A22-6821-6_360PrincOpsJan67.pdf) | Seções 1, 2, 6 |
 | 3 | DEC. *VAX Architecture Handbook* (1981). [Link](https://50anni.informatica.unisa.it/wp-content/uploads/2023/02/02-VAX-architecture-handbook-1981.pdf) | Seções 1, 2, 6 |
 | 4 | DREPPER, U. *What Every Programmer Should Know About Memory* (2007). [Link](http://www.akkadia.org/drepper/cpumemory.pdf) | Seções 3, 7 |
-
-> **Nota:** as citações de arquitetura (registradores, endereçamento, tabelas de sistema) vêm dos manuais acima. As latências são de 2007 e servem como ordem de grandeza. Conferir página e edição exata antes da versão final.
