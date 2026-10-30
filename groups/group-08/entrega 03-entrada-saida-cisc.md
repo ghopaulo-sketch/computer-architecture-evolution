@@ -4,7 +4,6 @@
 |---|---|
 | **Objeto estudado** | Arquitetura CISC (exemplos: IBM System/360, DEC VAX-11/780, Intel x86/x86-64) |
 | **Entrega** | 05 — Entrada, Saída e Interação com o Ambiente |
-| **Issues relacionadas** | `#3`|
 ---
 ## Resumo
 
