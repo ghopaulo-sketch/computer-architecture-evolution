@@ -4,13 +4,7 @@
 |---|---|
 | **Objeto estudado** | Arquitetura CISC, com o x86 de 32 bits (IA-32) como caso principal |
 | **Entrega** | 09 — Modelo de Operação e Instruções |
-| **Disciplina** | Computer Organization and Architecture |
-| **Issue** | #27 (o PR deve conter `Related to #27`) |
-| **Data de entrega** | 05/11/2026 |
-| **Status** | Pronto para revisão |
-
-> **Escopo:** o conceito de CISC não é repetido (já tratado em issues anteriores). O IA-32 é o exemplo principal, e o x86-64 aparece só quando ajuda a comparar. Há comparações com RISC quando elas esclarecem o assunto. As fontes estão no final.
-
+---
 ## Resumo
 
 No x86, o processador recebe o que deve executar como **instruções em código de máquina**, guardadas na memória. A ISA define cerca de nove categorias de operações, instruções de **tamanho variável (1 a 15 bytes)**, vários modos de endereçamento e operandos que podem estar em registrador, na própria instrução ou na memória. Uma única instrução, como `add eax, [ebx + ecx*4 + 8]`, calcula um endereço, lê a memória e soma. O custo é uma decodificação mais complexa. Os x86 modernos escondem esse custo traduzindo as instruções em **micro-operações**, sem mudar a ISA vista pelos programas.
@@ -45,7 +39,7 @@ flowchart TB
 ```
 
 No IA-32, o registrador **EIP** guarda o endereço da próxima instrução a executar. Qualquer que seja a linguagem usada, o que o processador executa é código de máquina.
-
+---
 ## 2. Existem instruções? Qual é o conjunto (ISA)?
 
 Sim. O x86 tem uma ISA bem definida, que estabelece as instruções, os registradores, os tipos de operandos e as regras de execução. Ela cresceu ao longo das gerações, com novas instruções e extensões.
@@ -62,7 +56,7 @@ Sim. O x86 tem uma ISA bem definida, que estabelece as instruções, os registra
 | Implementação interna | Micro-operações e microcódigo, conforme a instrução e o processador |
 
 Essa descrição vale para o IA-32. Outros CISC têm outro número de registradores e outros formatos (o x86-64 tem 16 registradores de 64 bits, e o VAX tem 16 de 32 bits).
-
+---
 ## 3. Que tipos de operações são suportados?
 
 | Categoria | Exemplos | Finalidade |
@@ -87,7 +81,7 @@ Algumas instruções exigem privilégio e não podem ser usadas livremente por q
 | `cli`, `sti` | Nível de privilégio atual menor ou igual ao IOPL |
 | `in`, `out` | Nível de privilégio atual menor ou igual ao IOPL, ou permissão no mapa de bits de E/S do TSS |
 | `mov` para registradores de controle (CR0 etc.) | Somente no nível de privilégio 0 |
-
+---
 ## 4. Como as instruções são codificadas?
 
 No x86, as instruções são sequências de bytes de **tamanho variável**, diferente das arquiteturas de tamanho fixo. Uma instrução pode ter os campos abaixo, e nem todos aparecem sempre:
@@ -123,7 +117,7 @@ flowchart TB
 | Imediato | 1, 2 ou 4 bytes | Constante guardada na própria instrução. |
 
 O tamanho máximo é de **15 bytes**. Instruções simples ocupam poucos bytes, o que é uma vantagem, mas descobrir onde cada instrução começa e termina deixa a decodificação mais complexa para o hardware.
-
+---
 ## 5. Quais são os operandos?
 
 | Onde está | Exemplo | Descrição |
@@ -141,7 +135,7 @@ Para a memória há várias formas de endereçamento. O endereço efetivo é **b
 | `[ebx + ecx*4 + 8]` | EBX + ECX × 4 + 8 (muito útil para percorrer vetores de inteiros de 32 bits) |
 
 Nas operações aritméticas, normalmente um operando está em registrador e o outro pode estar na memória, mas **as duas fontes não podem estar na memória ao mesmo tempo**. As exceções são as instruções de cadeia (`movs`, `cmps`), que usam dois endereços de memória. Outros CISC vão além: no VAX, os três operandos de `ADDL3` podem estar na memória. Já os RISC tradicionais usam o modelo **load/store**: a aritmética trabalha com registradores, e só instruções de carga e armazenamento acessam a memória.
-
+---
 ## 6. Que configuração é necessária?
 
 | Item | Descrição |
@@ -153,7 +147,7 @@ Nas operações aritméticas, normalmente um operando está em registrador e o o
 | Ferramentas | Assemblers (NASM, GAS, MASM), compiladores e linkers. |
 
 Executar instruções não depende só do código de máquina: o ambiente precisa estar preparado para o modo de funcionamento escolhido. Os mesmos bytes podem ser interpretados de outra forma em modo real (16 bits) do que em modo protegido de 32 bits.
-
+---
 ## 7. Qual é a relação entre a programação e o hardware?
 
 A relação é feita pela **ISA**, que funciona como a interface entre software e processador. Quem programa em assembly vê registradores, memória, flags e instruções. Quem usa C normalmente não vê isso, porque o compilador faz a tradução.
@@ -169,7 +163,7 @@ O registrador **EFLAGS** guarda indicadores do resultado das operações, e os d
 | CF (*Carry Flag*) | Houve transporte ou empréstimo |
 | OF (*Overflow Flag*) | Estouro em operação com sinal |
 | DF (*Direction Flag*) | Sentido das instruções de cadeia (`movs`, `cmps`): crescente ou decrescente |
-
+---
 ## 8. Qual é um exemplo concreto?
 
 Vamos analisar a instrução abaixo. Ela soma ao EAX um valor guardado na memória.
@@ -227,7 +221,7 @@ add  a2, a2, t1       # a2 = a2 + t1              (4 bytes)
 ```
 
 São 4 instruções e 16 bytes, contra 1 instrução e 4 bytes no x86. Por outro lado, o x86 decodifica a instrução em pelo menos duas micro-operações (leitura da memória e soma), e a decodificação é mais complexa.
-
+---
 ## 9. Quais são as limitações do modelo?
 
 | Limitação | Por quê | Como é tratada hoje |
@@ -239,24 +233,11 @@ São 4 instruções e 16 bytes, contra 1 instrução e 4 bytes no x86. Por outro
 | Compatibilidade | Manter instruções antigas aumenta a complexidade e o custo do hardware. | Instruções raras ficam no microcódigo |
 
 Historicamente, estudos que levaram ao RISC indicaram que os programas usam muito mais as operações simples, o que motivou conjuntos de instruções reduzidos e mais regulares. Hoje a diferença entre CISC e RISC não é tão simples. Um estudo de 2013, com processadores ARM e x86 reais, encontrou contagens de instruções parecidas entre as duas ISAs, instruções x86 executadas com média de 3,1 a 3,4 bytes (até 25% mais curtas que as de 4 bytes do ARM) e uma razão de micro-operações por instrução quase sempre abaixo de 1,3. Concluiu que, a partir de processadores de desempenho médio, o fato de a ISA ser RISC ou CISC é pouco relevante para desempenho e energia. Para microcontroladores muito pequenos, porém, o x86 completo seria inviável.
-
+---
 ## 10. Algum conceito não se aplica?
 
 Sim. Não se aplica **configurar fisicamente cada operação** com chaves, cabos ou painéis de ligação, como em alguns computadores muito antigos. O x86 usa o conceito de **programa armazenado**: as instruções ficam na memória e o processador as executa na sequência definida pelo programa. Esse conceito não é exclusivo do CISC, pois os RISC modernos também o usam.
-
-## 11. Checklist da entrega
-
-| Item do checklist | Situação | Onde |
-|---|---|---|
-| Foi explicado como as operações são especificadas | Atendido | Seções 1, 3, 4 e 5 |
-| O modelo de programação ou configuração foi identificado | Atendido | Seções 2, 6 e 7 |
-| Existe um exemplo concreto | Atendido | Seção 8 |
-| Conceitos não aplicáveis foram justificados | Atendido | Seção 10 |
-| As fontes foram informadas | Atendido | Seção Fontes |
-| O PR referencia esta Issue | Pendente | Incluir `Related to #27` ao abrir o PR |
-
-**Submissão:** seguir o guia de submissão do repositório (`SUBMITIONS-GUIDE.md`, conforme o nome informado na atividade; conferir a grafia do arquivo).
-
+---
 ## Fontes
 
 | # | Referência | Usada em |
@@ -269,5 +250,3 @@ Sim. Não se aplica **configurar fisicamente cada operação** com chaves, cabos
 | 6 | MICRO-OPERATION. Wikipedia. [Link](https://en.wikipedia.org/wiki/Micro-operation) | Seção 7 |
 | 7 | STANFORD UNIVERSITY. The RISC Project. [Link](https://cs.stanford.edu/people/eroberts/courses/soco/projects/risc/whatis/index.html) | Seções 5, 9 |
 | 8 | COMPILER EXPLORER. Ferramenta para ver código-fonte traduzido para assembly. [Link](https://godbolt.org/) | Seção 8 (para o grupo reproduzir os exemplos) |
-
-> **Notas para revisão:** (1) Conferi a codificação dos três exemplos da seção 8 com um assembler (GNU as, sintaxe Intel): `03 44 8B 08`, `B8 05 00 00 00` e `F3 A4`. (2) O limite de 15 bytes por instrução vem do manual da Intel. O artigo de 2013 lista 16 bytes em uma tabela; foi mantido o valor do manual. (3) A sequência RISC-V da seção 8 foi acrescentada como comparação ilustrativa. (4) Os dados do artigo de 2013 (3,1 a 3,4 bytes, razão abaixo de 1,3) são de medições com x86 e ARM de 32 bits em 2013 e valem para esse contexto. (5) O DOI de Patterson e Ditzel resolve para a página da ACM, mas o acesso automático foi bloqueado; o PDF está em link alternativo. (6) As referências 5 a 7 são materiais complementares; a base técnica é o manual da Intel (volume 2 para a codificação).
