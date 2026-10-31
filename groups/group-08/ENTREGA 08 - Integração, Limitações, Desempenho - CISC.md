@@ -4,15 +4,11 @@
 |---|---|
 | **Objeto estudado** | Arquitetura CISC (exemplos: IBM System/360 Model 85, DEC VAX-11/780, Intel x86/x86-64) |
 | **Entrega** | 08 — Integração, Limitações e Desempenho |
-| **Issues relacionadas** | `#__` (preencher: entregas anteriores sobre CISC, armazenamento, E/S e fluxo de dados) |
-| **Status** | Pronto para revisão |
-
-> **Escopo:** o conceito de CISC não é repetido (já tratado em issues anteriores). As seções 1 a 5 seguem o modelo microprogramado visto nas aulas. As seções 6 a 12 detalham máquinas reais. O desempenho é analisado **dentro do contexto tecnológico de cada máquina**, sem comparar velocidade absoluta com hardware atual. As fontes estão no final.
-
+---
 ## Resumo
 
 A arquitetura CISC se baseia na **microprogramação**: instruções complexas, com operandos diretamente na memória, são executadas como sequências de passos simples. Isso gera programas densos e poucas buscas de instrução, o que era vantagem quando a memória era cara e lenta. O custo é **mais ciclos por instrução** e **mais acessos à memória**. As soluções historicamente adotadas para esse custo foram o **cache** (System/360 Model 85), o **buffer de instruções, a TB e o buffer de escrita** (VAX-11/780) e a **tradução em micro-operações com execução fora de ordem** (x86). A característica que mais influencia o trabalho dessas máquinas é o **modelo de instruções complexas que operam sobre a memória**, justificado na seção 12.
-
+---
 ## 1. Como os principais componentes trabalham conjuntamente
 
 A arquitetura CISC se baseia na microprogramação: instruções complexas (macroinstruções) são executadas como sequências de passos simples (microinstruções), controlados por um microprograma. Os componentes a seguir seguem o modelo didático das aulas. No modelo, o microprograma completo tem 79 microinstruções, e a leitura e a escrita de memória levam dois ciclos.
@@ -48,7 +44,7 @@ flowchart TB
 ```
 
 > **Observação:** o modelo trata memória de programa e memória de dados separadamente, por clareza. No System/360, no VAX e no x86 há uma única memória para instruções e dados (o x86 separa instruções e dados apenas nos caches L1).
-
+---
 ## 2. Características que favorecem o funcionamento
 
 - **Alta densidade de código:** uma única macroinstrução faz várias tarefas (carregar da memória, somar e salvar), então os programas ocupam menos espaço na RAM. Isso reduz o tráfego no barramento durante a busca de instruções e permite rodar programas complexos em sistemas com pouca memória.
@@ -57,7 +53,7 @@ flowchart TB
 - **Hierarquia de memória (cache):** como as instruções levam vários ciclos e acessam muito a memória de dados, o cache próximo ao núcleo reduz as esperas e evita que o processador fique ocioso aguardando a RAM. Ele não é exclusivo do CISC, mas é essencial para compensar o custo de acesso à memória desse modelo.
 - **Compatibilidade a longo prazo:** o software legado continua funcionando em máquinas novas, seja por microprogramas, seja por decodificadores que traduzem as instruções antigas (como na evolução do x86). Isso favorece a estabilidade do ecossistema de software.
 - **E/S desacoplada da CPU:** no System/360, os canais executam programas de canal sozinhos, e a CPU continua trabalhando.
-
+---
 ## 3. Principais limitações
 
 - **Pipeline e paralelismo:** as instruções têm tamanho variável e levam números diferentes de ciclos, o que dificulta um pipeline eficiente. Uma instrução complexa e demorada atrasa as seguintes. No VAX-11/780, a decodificação da instrução seguinte só começava depois que a anterior terminava.
@@ -65,7 +61,7 @@ flowchart TB
 - **Energia e calor:** decodificar instruções complexas em várias microinstruções consome energia e gera calor. Isso historicamente limitou o CISC em dispositivos móveis e a bateria. Estudos recentes indicam que, nos x86 atuais, a diferença causada pela ISA é pequena em relação à microarquitetura.
 - **Mais acessos à memória:** instruções que operam direto na memória e modos de endereçamento complexos geram vários acessos por instrução. Como a memória (cache ou RAM) é mais lenta que o processador, o processador espera pelo barramento quando o dado não está no cache.
 - **Poucos registradores:** só 16 registradores, o que aumenta o tráfego com a memória.
-
+---
 ## 4. Gargalos
 
 | Gargalo | Descrição | Evidência |
@@ -76,7 +72,7 @@ flowchart TB
 | Energia e calor (*power wall*) | Circuitos grandes de decodificação e de microprogramação consomem energia por ciclo e limitam o aumento do clock sem dissipação eficiente. O problema vale para processadores em geral, e o peso específico do CISC hoje é pequeno. | Estudos recentes sobre x86 e ARM. |
 | Tradução de endereços | Tabelas de páginas lidas na memória falham no cache com frequência. | VAX-11/780: 0,029 faltas de TB por instrução, cerca de 21,6 ciclos por falta. |
 | Barramentos e canais | Canal seletor atende uma operação por vez; UNIBUS limitado em vazão. | UNIBUS do VAX-11/780: 1,5 MB/s agregados. |
-
+---
 ## 5. Fatores que influenciam o desempenho
 
 O tempo de execução depende de **número de instruções × ciclos por instrução (CPI) × duração do ciclo**. O CISC reduz o primeiro fator e aumenta o segundo.
@@ -97,7 +93,7 @@ O tempo de execução depende de **número de instruções × ciclos por instru�
 ```asm
         ADDL3  (R1)+, 8(R2), R3    R3 = mem[R1] + mem[R2 + 8]; R1 = R1 + 4
 ```
-
+---
 ## 6. Capacidade de processamento
 
 O System/360 Model 85 foi desenvolvido para oferecer alto desempenho. O processador tinha ciclo de 80 nanossegundos e trabalhava internamente com palavras de 16 bytes, transferindo essa quantidade de dados em uma única solicitação. Um cache integrado ao processador guardava os dados mais usados e reduzia o tempo de acesso. Nos estudos apresentados, o sistema alcançou, em média, **81% do desempenho de um sistema teórico ideal** (toda a memória na velocidade do cache), o que mostra a contribuição da hierarquia de memória.
@@ -119,7 +115,7 @@ Para comparar sem usar só velocidade absoluta, usam-se medidas internas, como c
 | Espera de escrita | 0,450 | 4,2% |
 | Espera por bytes do buffer de instruções | 0,720 | 6,8% |
 | **Total** | **10,593** | **100%** |
-
+---
 ## 7. Comunicação
 
 No VAX-11/780, os principais componentes se comunicam pelo **SBI** (*Synchronous Backplane Interconnect*), que liga a CPU, a memória principal e o subsistema de entrada e saída. Essa estrutura permite a troca de instruções, dados e solicitações entre as unidades. Os periféricos se conectam por interfaces específicas: o **MASSBUS** liga dispositivos de armazenamento, como discos e fitas, e o **UNIBUS** liga periféricos e dispositivos de E/S.
@@ -131,7 +127,7 @@ O compartilhamento dos mecanismos de comunicação gera limitações quando vár
 | System/360 | CPU e dispositivos se comunicam por **canais** (seletor e multiplexador). O programa descreve a operação em CCWs. O canal avisa o fim por **interrupção** e registra o estado no CSW. No Model 85, os canais leem direto da memória principal e suas escritas atualizam o cache se o dado estiver presente. |
 | VAX-11/780 | Barramento interno **SBI**; adaptadores para **UNIBUS** e **MASSBUS**; console LSI-11. Taxa agregada máxima do UNIBUS: 1,5 MB/s. |
 | x86-64 | Portas de E/S, registradores mapeados em memória, **DMA** e **interrupções** (APIC/MSI). O DMA normalmente é coerente com os caches. |
-
+---
 ## 8. Armazenamento
 
 O armazenamento é organizado em níveis: **registradores** (16 no System/360, no VAX e no x86-64), **memória principal** (programas, dados, pilha e tabelas) e **armazenamento externo** (disco e fita). Como as instruções podem usar operandos na memória, o desempenho depende de como a memória é acessada.
@@ -143,7 +139,7 @@ O armazenamento é organizado em níveis: **registradores** (16 no System/360, n
 | x86-64 | Registradores, **L1**, **L2**, **L3** e DRAM, com TLBs, cache de micro-operações e *store buffer*. |
 
 O **microcódigo** é outro elemento de armazenamento próprio do CISC: fica em uma memória de controle dentro da CPU, e nos x86 atuais parte dele pode ser atualizada na inicialização. O espaço de endereçamento cresceu com as gerações: 24 bits no System/360 (16 MiB), 32 bits virtuais no VAX (4 GiB) e 48 ou 57 bits virtuais no x86-64.
-
+---
 ## 9. Paralelismo
 
 O paralelismo nas máquinas CISC aparece em níveis diferentes, conforme a época.
@@ -173,7 +169,7 @@ flowchart TB
 ```
 
 Em resumo, instruções complexas e de tamanho variável dificultam o paralelismo, porque complicam a decodificação e criam dependências de memória. A solução moderna foi esconder o CISC atrás de micro-operações simples.
-
+---
 ## 10. Decisões arquiteturais importantes
 
 | Decisão | Vantagem | Custo ou limitação |
@@ -185,7 +181,7 @@ Em resumo, instruções complexas e de tamanho variável dificultam o paralelism
 | Memória virtual e especificadores regulares (VAX) | Programação e compiladores mais simples | Mais trabalho para microcódigo e tabelas de tradução |
 | Cache transparente ao programa (Model 85) | Ganho de desempenho sem quebrar a compatibilidade | Hardware adicional; falhas de cache causam esperas |
 | Manter a interface CISC e executar micro-operações (x86) | Compatibilidade de software e uso de técnicas modernas | Custo de decodificação e de energia |
-
+---
 ## 11. Contexto tecnológico: o sistema era adequado à função?
 
 | Máquina | Função de projeto | Adequação (evidência) |
@@ -228,25 +224,7 @@ flowchart TB
   classDef out fill:#FDE8D0,stroke:#57606A,color:#1F2328
   classDef dev fill:#EEF0F2,stroke:#57606A,color:#1F2328
 ```
-
-**Ressalva.** Estudos recentes concluem que, com microarquitetura moderna, o fato de a ISA ser CISC ou RISC pesa pouco no desempenho e na energia do x86 atual. A resposta acima vale principalmente para o contexto das máquinas históricas e para a lógica que levou às soluções de hoje.
-
-## Checklist da entrega
-
-- [x] Como os componentes trabalham juntos (seção 1)
-- [x] Características que favorecem o funcionamento (seção 2)
-- [x] Principais limitações (seção 3)
-- [x] Gargalos (seção 4)
-- [x] Fatores que influenciam o desempenho (seção 5)
-- [x] Capacidade de processamento (seção 6)
-- [x] Comunicação (seção 7)
-- [x] Armazenamento (seção 8)
-- [x] Paralelismo (seção 9)
-- [x] Decisões arquiteturais importantes (seção 10)
-- [x] Contextualização tecnológica (seção 11)
-- [x] Questão central justificada tecnicamente (seção 12)
-- [x] Fontes com link (abaixo)
-
+---
 ## Fontes
 
 | # | Referência | Usada em |
@@ -269,5 +247,3 @@ flowchart TB
 | 16 | FOG, A. *The microarchitecture of Intel, AMD and VIA CPUs*. [Link](https://www.agner.org/optimize/microarchitecture.pdf) | Seções 4, 6, 9 |
 | 17 | BLEM, E.; MENON, J.; SANKARALINGAM, K. *Power Struggles: Revisiting the RISC vs. CISC Debate*. HPCA, 2013. [Link](https://courses.cs.washington.edu/courses/cse470/17sp/readings/RISC_CISC_1.pdf) | Seções 11, 12 |
 | 18 | University of Edinburgh. *Two-address systems: IBM System/360 and /370*. [Link](https://homepages.inf.ed.ac.uk/rni/comp-arch/Instr/2-addr.html) | Seção 2 |
-
-> **Notas para revisão:** (1) Os números do Model 85 vêm do artigo de 1968 e os do VAX-11/780 do artigo de 1984 (carga de *time-sharing* sob VMS). (2) São cálculos próprios: a razão de cerca de 13 vezes entre memória e processador do Model 85, os percentuais da seção 6, os 20% de esperas, os cerca de 3,4 acessos ao cache por instrução e as cerca de 0,47 milhão de instruções por segundo. (3) O resultado de 2 a 4 vezes (média de 2,7) para MIPS contra VAX vem do resumo do artigo de 1991 em livro-texto; conferir no artigo. (4) A afirmação de que modelos pequenos do System/360 emulam em microcódigo o que modelos grandes fazem em hardware precisa de confirmação na literatura do System/360. (5) As aulas da USP estão listadas como fonte das seções 1 a 5; conferir em qual aula cada afirmação aparece (barramentos A e B, faixa de 6 a 16 registradores). (6) Os valores do x86 (48 e 57 bits, linha de 64 bytes, instruções de 1 a 15 bytes) são típicos e variam por modelo.
