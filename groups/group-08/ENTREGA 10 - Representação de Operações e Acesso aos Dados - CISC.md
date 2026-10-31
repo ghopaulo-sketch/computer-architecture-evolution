@@ -4,15 +4,10 @@
 |---|---|
 | **Objeto estudado** | Arquitetura CISC (*Complex Instruction Set Computer*), com a arquitetura x86 (IA-32, 32 bits) como caso principal |
 | **Entrega** | 10 — Representação de Operações e Acesso aos Dados |
-| **Disciplina** | Computer Organization and Architecture |
-| **Data de entrega** | 12/11/2026 |
-| **Issue relacionada** | `#28` (o PR deve conter `Related to #28`) |
-| **Arquivo no repositório** | `ENTREGA-10-REPRESENTACAO_DE_OPERACOES_E_ACESSO_AOS_DADOS.md` |
 | **Referência-base** | STALLINGS, *Computer Organization and Architecture* (11ª ed.), cap. 14, "Instruction Sets: Addressing Modes and Formats" (na 10ª edição é o cap. 13; conferir na edição utilizada) |
-| **Status** | Pronto para revisão |
-
-> **Objetivo da atividade:** investigar como uma operação em uma arquitetura CISC identifica, recebe ou localiza os dados necessários para sua execução. O x86 é usado como exemplo principal por ser a arquitetura CISC mais difundida. Como o x86 possui modos de endereçamento, a análise se concentra nos mais relevantes, sem classificar todos os mecanismos possíveis. O texto responde às dez perguntas da tarefa e traz a representação com diagramas e um exemplo concreto. As fontes estão no final.
-
+---
+> **Objetivo da atividade:** Investigar como uma operação em uma arquitetura CISC identifica, recebe ou localiza os dados necessários para sua execução. O x86 é usado como exemplo principal por ser a arquitetura CISC mais difundida. Como o x86 possui modos de endereçamento, a análise se concentra nos mais relevantes, sem classificar todos os mecanismos possíveis. O texto responde às dez perguntas da tarefa e traz a representação com diagramas e um exemplo concreto. As fontes estão no final.
+---
 ## Resumo
 
 Em uma instrução x86, cada operando pode estar em um de **três lugares**: **dentro da própria instrução** (valor imediato), **em um registrador** ou **na memória**, e a própria codificação da instrução indica qual deles. O **opcode** define a operação e a direção do dado; o byte **ModR/M** indica se o operando é registrador ou memória e qual modo de endereçamento é usado; o byte **SIB** (*Scale-Index-Base*) acrescenta índice e escala quando o modo exige; deslocamento e imediato ocupam os bytes finais. Quando o operando está na memória, o processador calcula o **endereço efetivo** (base + índice × escala + deslocamento) e o combina com o **registrador de segmento** (SS ou DS) para formar o **endereço linear**. Uma mesma instrução pode combinar acesso à memória e operação aritmética, sem exigir uma instrução de carga separada, como ocorre nas arquiteturas RISC do tipo load/store. O preço dessa flexibilidade é o **tamanho variável das instruções**, a decodificação mais complexa e as restrições de codificação (escala, deslocamento, registradores).
@@ -28,7 +23,7 @@ Em uma instrução x86, cada operando pode estar em um de três lugares, e a pr�
 | Na memória | Endereço calculado a partir de registradores e/ou deslocamento | `mov eax, [ebx + 8]` |
 
 **Traço CISC:** uma mesma instrução pode combinar acesso à memória e operação aritmética, sem exigir uma instrução de carga separada, como ocorre nas arquiteturas RISC do tipo load/store.
-
+---
 ## 2. Como os valores são identificados
 
 Pela **codificação da instrução**:
@@ -81,7 +76,7 @@ flowchart TD
 - **Caso especial:** `mod = 00` e `r/m = 101` → endereço direto, só com deslocamento de 32 bits.
 
 O campo `mod` separa registrador de memória; `r/m = 100` sinaliza que o byte SIB acompanha a instrução.
-
+---
 ## 3. Como os dados armazenados são localizados
 
 Pelo **cálculo do endereço efetivo**. No x86, o processador calcula um *offset* a partir de registradores e deslocamento e o combina com o registrador de segmento para formar o **endereço linear (LA)**.
@@ -121,7 +116,7 @@ flowchart TD
 ```
 
 Imediato e registrador dispensam cálculo de endereço; só o acesso à memória passa pelo modo de endereçamento.
-
+---
 ## 4. Existência de endereços e modos de endereçamento relevantes
 
 **Sim**, existem endereços. Os modos básicos são os apresentados por Stallings (Tabela 14.1).
@@ -157,7 +152,7 @@ Imediato e registrador dispensam cálculo de endereço; só o acesso à memória
 | Relativo | `LA = (PC) + A` | `jmp rótulo` (desvios) |
 
 **Usos típicos:** base + deslocamento para acessar campos de estruturas e variáveis locais; índice escalado para percorrer vetores, em que a escala corresponde ao tamanho do elemento.
-
+---
 ## 5. Como os registradores são utilizados
 
 - **Registradores de uso geral** (`EAX`, `ECX`, `EDX`, `EBX`, `ESP`, `EBP`, `ESI`, `EDI`): guardam operandos, bases e índices.
@@ -178,18 +173,18 @@ flowchart LR
 ```
 
 *O processador lê ou grava o dado nesse endereço linear.* O offset soma base, índice × escala e deslocamento; o registrador de segmento (`SS` ou `DS`) completa o endereço linear.
-
+---
 ## 6. Existência de posições, canais ou mecanismos equivalentes
 
 **Sim.**
 
 - **Pilha:** mecanismo implícito. `push` e `pop` usam `ESP` sem que o endereço apareça como operando.
 - **Segmentação de memória:** o endereço lógico é formado por segmento e offset. É outro mecanismo de localização de dados no x86 clássico.
-
+---
 ## 7. Como ocorre a seleção dos dados
 
 A seleção é feita pela combinação de **opcode**, **ModR/M** e **SIB**, que descrevem qual operando usar e como calcular seu endereço quando ele está na memória. O processador decodifica esses bytes, calcula o endereço efetivo, acessa o dado e executa a operação.
-
+---
 ## 8. Exemplo concreto
 
 A instrução analisada é:
@@ -260,7 +255,7 @@ Com `EBX = 0x1000` e `ESI = 3`, o offset vale `0x1014`; se ali houver `0x0000002
 | `08` | Deslocamento de 8 bits |
 
 **Em resumo:** uma única instrução realiza o cálculo do endereço e o acesso à memória, característica típica da filosofia CISC.
-
+---
 ## 9. Como outros CISC resolvem o mesmo problema
 
 O estudo de **Emer e Clark (1984)** sobre o **VAX-11/780** mostra que as instruções desse computador podem ter de **zero a seis especificadores de operando**, que descrevem os dados necessários à instrução. É a mesma ideia do x86 em outro CISC: o operando é descrito dentro da própria instrução, e a quantidade de modos e especificadores aumenta a complexidade de decodificação. O VAX é famoso por ter muitos modos de endereçamento. O **Motorola 68000** é outro CISC clássico para comparação.
@@ -282,7 +277,7 @@ flowchart LR
 ```
 
 No x86 uma instrução embute o acesso à memória; no RISC, o load e a operação são instruções separadas.
-
+---
 ## 10. Limitações desses mecanismos
 
 - **`ESP` não pode ser usado como índice** no byte SIB.
@@ -291,23 +286,7 @@ No x86 uma instrução embute o acesso à memória; no RISC, o load e a operaç�
 - O x86 de 32 bits tem **poucos registradores de uso geral (8)**, o que favorece o uso da memória (as versões de 64 bits ampliaram para 16).
 - **Instruções de tamanho variável** complicam a decodificação.
 - **Mais modos de endereçamento exigem mais bits** para serem representados, argumento usado por Patterson e Ditzel (1980) na defesa do RISC.
-
-## Checklist da entrega
-
-- [x] Como os operandos são fornecidos (seção 1)
-- [x] Como os valores são identificados (seção 2)
-- [x] Como os dados armazenados são localizados (seção 3)
-- [x] Existência de endereços e modos de endereçamento relevantes (seção 4)
-- [x] Como os registradores são utilizados (seção 5)
-- [x] Existência de posições, canais ou mecanismos equivalentes (seção 6)
-- [x] Como ocorre a seleção dos dados (seção 7)
-- [x] Exemplo concreto (seção 8)
-- [x] Como outros CISC resolvem o mesmo problema (seção 9)
-- [x] Limitações desses mecanismos (seção 10)
-- [x] Representação com diagramas e exemplo (Figuras 1 a 6)
-- [x] Fontes com link (abaixo)
-- [ ] PR com `Related to #28`
-
+---
 ## Fontes
 
 ### Livros e manuais
@@ -323,7 +302,7 @@ No x86 uma instrução embute o acesso à memória; no RISC, o load e a operaç�
 | 7 | CARTER, P. *PC Assembly Language*. [Link](https://pacman128.github.io/static/pcasmbook.pdf) | Apoio |
 | 8 | HYDE, R. *The Art of Assembly Language* (2ª ed.). [Link](https://colorcomputerarchive.com/repo/Documents/Books/The%20Art%20of%20Assembly%20Language%202nd%20Edition%20%28Randall%20Hyde%29.pdf) | Apoio |
 | 9 | *Memory segmentation* (Wikipedia). [Link](https://en.wikipedia.org/wiki/Memory_segmentation) | Segmentação de memória (seção 6) |
-
+---
 ### Artigos acadêmicos
 
 Estes dois trabalhos são particularmente relevantes para discutir a diferença entre as arquiteturas CISC e RISC.
@@ -332,7 +311,7 @@ Estes dois trabalhos são particularmente relevantes para discutir a diferença 
 |---|---|---|
 | 1 | PATTERSON, D. A.; DITZEL, D. R. *The Case for the Reduced Instruction Set Computer*. ACM SIGARCH Computer Architecture News, v. 8, n. 6, p. 25–33, 1980. [DOI](https://doi.org/10.1145/641914.641917) · [Cópia](https://cs.utexas.edu/~fussell/courses/cs352h/papers/risc.pdf) | Discute os argumentos que fundamentaram a filosofia RISC e a simplificação dos conjuntos de instruções (seção 10) |
 | 2 | EMER, J. S.; CLARK, D. W. *A Characterization of Processor Performance in the VAX-11/780*. 11th International Symposium on Computer Architecture (ISCA), p. 301–310, 1984. [DBLP](https://dblp1.uni-trier.de/rec/conf/isca/EmerC84.html) · [Cópia](https://people.csail.mit.edu/emer/media/papers/1984.05.isca.vax.pdf) | Útil para compreender o comportamento real de um processador VAX e a utilização de suas instruções (seção 9) |
-
+---
 ### Referências gerais (apoio)
 
 Servem para consulta rápida e compreensão inicial dos conceitos. **Não substituem os livros e documentos oficiais.**
@@ -349,11 +328,9 @@ Servem para consulta rápida e compreensão inicial dos conceitos. **Não substi
 | x86 assembly language | <https://en.wikipedia.org/wiki/X86_assembly_language> |
 | ModR/M | <https://en.wikipedia.org/wiki/ModR/M> |
 | Compiler Explorer (ver C virar assembly x86 e como os operandos aparecem) | <https://godbolt.org/> |
-
+---
 ### Fontes complementares de assembly
 
 - Site oficial de Randall Hyde e página editorial de *The Art of Assembly Language*.
 - Oracle, *x86 Assembly Language Reference Manual*: operandos imediatos, registradores e memória.
 - Referência técnica de codificação SIB: detalhes da seleção de registradores de base e índice.
-
-> **Nota:** os valores do exemplo da seção 8 (`EBX = 0x1000`, `ESI = 3`, conteúdo `0x0000002A` em `0x1014`) são **hipotéticos**, usados só para ilustrar o cálculo. O número do capítulo de Stallings varia entre edições (cap. 14 na 11ª, cap. 13 na 10ª): conferir na edição utilizada antes da versão final.
