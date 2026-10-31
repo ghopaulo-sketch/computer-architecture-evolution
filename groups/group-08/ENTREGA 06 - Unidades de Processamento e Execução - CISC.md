@@ -1,4 +1,4 @@
-# Processamento em CISC — Unidades, Operações e Paralelismo
+# Entrega 06 - Processamento em CISC — Unidades, Operações e Paralelismo
 
 | Campo | Descrição |
 |---|---|
