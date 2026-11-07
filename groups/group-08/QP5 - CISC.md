@@ -1,6 +1,6 @@
 QP5 - O que mudou do 8086 para o x86-64 atual?
 
-## Contexto: O 8086, lançado pela Intel em 1978, foi o processador que deu origem à família x86. Era um processador de 16 bits. Desde então, a arquitetura evoluiu em três grandes etapas: 16 bits (8086, 1978), 32 bits (80386, 1985) e 64 bits (x86-64, desenvolvido pela AMD em 2003 e posteriormente adotado pela Intel). Apesar das mudanças, a arquitetura manteve grande parte da compatibilidade com versões anteriores, preservando características do projeto original.
+*Contexto*: O 8086, lançado pela Intel em 1978, foi o processador que deu origem à família x86. Era um processador de 16 bits. Desde então, a arquitetura evoluiu em três grandes etapas: 16 bits (8086, 1978), 32 bits (80386, 1985) e 64 bits (x86-64, desenvolvido pela AMD em 2003 e posteriormente adotado pela Intel). Apesar das mudanças, a arquitetura manteve grande parte da compatibilidade com versões anteriores, preservando características do projeto original.
 
 *Tamanho dos registradores*: No 8086, os principais registradores de propósito geral possuíam 16 bits: AX, BX, CX e DX, além de SI, DI, BP e SP. Também existiam registradores de segmento (CS, DS, SS e ES), o ponteiro de instrução (IP) e o registrador de flags (FLAGS). No 80386, esses registradores foram ampliados para 32 bits, recebendo o prefixo E (EAX, EBX, EIP, EFLAGS etc.). No x86-64, foram ampliados para 64 bits, utilizando o prefixo R (RAX, RBX, RIP, RFLAGS etc.). Os registradores antigos continuam acessíveis em partes menores, como RAX, EAX, AX, AH e AL.
 
