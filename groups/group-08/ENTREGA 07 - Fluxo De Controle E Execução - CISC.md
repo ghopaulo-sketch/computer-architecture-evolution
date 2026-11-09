@@ -3,7 +3,7 @@
 | Campo | Descrição |
 |---|---|
 | **Objeto estudado** | Arquitetura CISC (exemplo: Intel x86/x86-64) |
-| **Issue** | 07 — Fluxo de Controle e Execução |
+| **Entrega** | 07 — Fluxo de Controle e Execução |
 ---
 ## Resumo
 
