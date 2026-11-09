@@ -4,17 +4,11 @@
 |---|---|
 | **Objeto estudado** | Arquitetura CISC (caso principal: Intel x86 / IA-32) |
 | **Entrega** | 11 — Exemplo Técnico de Funcionamento |
-| **Data** | 19/11/2026 |
-| **Issues relacionadas** | `#29` (PR com `Related to #29`) |
-| **Arquivos relacionados** | `assembly-example.asm` (código completo e comentado) |
-| **Status** | Pronto para revisão |
-
-> **Escopo:** o conceito de CISC e os modos de endereçamento não são repetidos (já tratados nas entregas 05 e 10). O texto escolhe **uma única tarefa representativa** e a explica passo a passo: entrada, programação, componentes, circulação das informações, operações e resultado. As fontes estão no final.
-
+---
 ## Resumo
 
 A tarefa escolhida é **somar os 4 elementos de um vetor de inteiros de 32 bits e gravar o resultado em uma variável (`total`)**, em Assembly x86 (IA-32). Ela é característica de CISC porque a instrução central, `add eax, [ebx + esi*4]`, **calcula um endereço com base, índice e escala, lê a memória e soma, tudo em uma única instrução**. O laço usa ainda `loop`, que decrementa o contador e desvia na mesma instrução, e o programa mistura instruções de **1, 2, 3 e 5 bytes**. A execução faz 4 iterações e termina com `total = 100`, gravado na memória com `mov [total], eax`, num total de **17 instruções executadas**.
-
+---
 ## 1. Tarefa escolhida
 
 **Somar os 4 elementos de um vetor de inteiros de 32 bits armazenado na memória e gravar o resultado em `total`.**
@@ -25,7 +19,7 @@ A tarefa escolhida é **somar os 4 elementos de um vetor de inteiros de 32 bits 
 | Modo de endereçamento complexo | `[ebx + esi*4]` = base + índice × escala, do mesmo tipo da Entrega 10 (`mov eax, [ebx + esi*4 + 8]`). |
 | Instrução de laço dedicada | `loop soma` faz `ECX = ECX - 1` e desvia se `ECX ≠ 0`. |
 | Instruções de tamanho variável | Neste programa: 1 byte (`inc esi`), 2 (`xor`, `loop`), 3 (`add`) e 5 (`mov` com imediato ou endereço). |
-
+---
 ## 2. Entrada
 
 | Item | Valor |
@@ -45,7 +39,7 @@ O x86 é **little-endian**: o byte menos significativo fica no endereço mais ba
 | `0x00402008` | `1E 00 00 00` | `array[2] = 30` |
 | `0x0040200C` | `28 00 00 00` | `array[3] = 40` |
 | `0x00402010` | `00 00 00 00` | `total = 0` |
-
+---
 ## 3. Como o sistema é programado
 
 O programa é escrito em **Assembly x86 (IA-32, sintaxe NASM)**. O arquivo completo está em `assembly-example.asm`.
@@ -107,7 +101,7 @@ Endereços de código didáticos, a partir de `0x00401000`:
 | `B3` | `10 110 011` | SIB | `scale=10` (×4), `index=110` (ESI), `base=011` (EBX) |
 
 **Traço CISC:** a instrução é decodificada em vários campos (opcode + ModR/M + SIB), consequência direta do formato de tamanho variável. O resultado da decodificação é `EAX ← EAX + Memória[EBX + ESI × 4]`.
-
+---
 ## 4. Componentes que participam
 
 | Componente | Participação neste exemplo |
@@ -125,7 +119,7 @@ Endereços de código didáticos, a partir de `0x00401000`:
 | ULA | Executa a soma, o `inc` e o decremento de ECX. |
 | EFLAGS | Recebe o resultado de status das operações aritméticas. |
 | *Store buffer* | Guarda a escrita final (`mov [total], eax`) enquanto ela é encaminhada ao cache. |
-
+---
 ## 5. Como as informações circulam
 
 **Figura 1 — Caminho geral dos dados no programa**
@@ -186,7 +180,7 @@ flowchart TB
 | 7. Atualização do EIP | EIP = EIP + 3 = `0x00401011`. | Aponta para `inc esi`. |
 
 Em implementações modernas do x86, a instrução é dividida internamente em micro-operações (uma de **carga** da memória e uma de **soma**). Para o programador, porém, continua sendo **uma única instrução**, e esse é o ponto característico da CISC.
-
+---
 ## 6. Operações realizadas
 
 ### 6.1 Preparação (executada uma vez)
@@ -228,7 +222,7 @@ flowchart TD
 | 4 | `0x0040200C` | 40 | 100 (`0x64`) | 4 | 0 | **Não** (ECX = 0, o laço termina) |
 
 Sobre as flags: `add` e `inc` atualizam as flags (o `inc` não altera CF) e `loop` **não** altera nenhuma flag. O desvio do `loop` depende apenas de ECX, e por isso não precisa de instrução de comparação.
-
+---
 ## 7. Como o resultado é produzido
 
 1. Após a 4ª iteração, `ECX = 0`, então `loop` **não** desvia e o fluxo segue para a próxima instrução.
@@ -242,7 +236,7 @@ Sobre as flags: `add` e `inc` atualizam as flags (o `inc` não altera CF) e `loo
 **Resultado final: `total = 100`**, igual a 10 + 20 + 30 + 40.
 
 **Contagem de instruções executadas:** preparação (4) + laço (3 × 4 iterações = 12) + gravação do resultado (1) = **17 instruções**.
-
+---
 ## 8. Comparação com load/store (RISC) e limitações
 
 Para evidenciar o caráter CISC, a mesma operação de cada iteração em uma arquitetura load/store (pseudocódigo) ficaria assim:
@@ -266,7 +260,7 @@ add   eax, eax, t1      ; acumula
 - **Decodificação mais complexa:** `add` com memória exige decodificar opcode + ModR/M + SIB.
 - **Instrução `loop`:** existe por conveniência, mas em processadores modernos costuma ser mais lenta que `dec ecx` + `jnz`, e os compiladores atuais normalmente preferem a segunda forma. Foi mantida por ser característica da CISC e por deixar o exemplo mais didático.
 - **Várias operações em uma instrução:** uma única instrução faz endereçamento, leitura da memória e soma, o que dificulta o pipeline e leva à decomposição em micro-operações.
-
+---
 ## 9. Como reproduzir e conferir
 
 ```bash
@@ -281,7 +275,7 @@ gdb ./assembly-example
 ```
 
 Os endereços reais serão definidos pelo linker e serão diferentes dos endereços didáticos usados neste texto. A lógica de funcionamento é a mesma.
-
+---
 ## Fontes
 
 | # | Referência | Usada em |
@@ -289,5 +283,3 @@ Os endereços reais serão definidos pelo linker e serão diferentes dos endere�
 | 1 | Intel. *Intel 64 and IA-32 Architectures Software Developer’s Manual*. [Link](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html) | Seções 3, 4, 5, 6, 8 |
 | 2 | NASM Project. *NASM — The Netwide Assembler: Documentation*. [Link](https://www.nasm.us/docs.php) | Seções 3 e 9 |
 | 3 | DREPPER, U. *What Every Programmer Should Know About Memory*. 2007. [Link](http://www.akkadia.org/drepper/cpumemory.pdf) | Seções 4, 5 |
-
-> **Nota:** os endereços (`0x00401000` e `0x00402000`) são didáticos. O código de máquina da seção 3.2 foi montado a partir do manual da Intel e os bytes e tamanhos foram conferidos com um desassemblador (Capstone, modo 32 bits), que reproduziu as mesmas 8 instruções. **Vale repetir a conferência com `objdump -d` (seção 9) antes da versão final.** A contagem de 17 instruções e a tabela de estados vêm da execução passo a passo do programa descrito neste texto.
