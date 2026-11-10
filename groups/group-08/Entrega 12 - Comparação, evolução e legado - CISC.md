@@ -5,10 +5,7 @@
 | **Objeto estudado** | Arquitetura CISC (*Complex Instruction Set Computer*), com a arquitetura x86 como caso principal |
 | **Objeto de comparação** | Arquitetura RISC (*Reduced Instruction Set Computer*), com ARM, RISC-V e MIPS como exemplos |
 | **Entrega** | 12 — Comparação, Evolução e Legado |
-| **Referência-base** | STALLINGS, *Computer Organization and Architecture*, capítulo sobre RISC (cap. 15 na 10ª edição; conferir na edição utilizada) e capítulos de conjunto de instruções; PATTERSON; HENNESSY, *Computer Organization and Design* |
----
-> **Objetivo da atividade:** Comparar o CISC com um objeto adequado (o RISC), explicar como a arquitetura evoluiu e investigar o que ela deixou como legado. O x86 é usado como exemplo principal por ser a arquitetura CISC mais difundida. Os critérios de comparação foram escolhidos por sua pertinência ao tema, sem usar todos os possíveis. O texto traz um mesmo exemplo de código nas duas arquiteturas, diagramas e uma linha do tempo. As fontes estão no final.
----
+
 ## Resumo
 
 O **CISC** nasceu para aproximar o hardware das linguagens de alto nível, com instruções poderosas, de **tamanho variável** e com **operandos na memória**, quando a memória era cara e os compiladores eram simples. O **RISC** surgiu no início dos anos 1980 como crítica a essa abordagem: instruções simples e regulares, arquitetura *load/store* e foco no pipeline. A comparação mostra um contraste de **filosofias**: o CISC economiza instruções e bytes de código; o RISC simplifica o hardware e facilita o paralelismo. Na prática, o debate foi **resolvido por convergência**. Desde o Pentium Pro (1995), os processadores x86 **traduzem instruções CISC em micro-operações simples**, executadas por um núcleo interno de estilo RISC, enquanto o ARM e o RISC-V ganharam instruções mais elaboradas. O CISC deixou como legado a **compatibilidade retroativa**, a **densidade de código**, a **microprogramação** e um ecossistema de software que mantém o x86 dominante em PCs e servidores e a *z/Architecture* em mainframes. Foram abandonadas as instruções de alto nível muito complexas, como as do VAX, e boa parte do legado de 16 bits no modo de 64 bits.
@@ -359,7 +356,7 @@ flowchart TD
 
 ## 3.7 Conclusão
 
-O CISC não foi "derrotado" pelo RISC: ele **absorveu** as ideias do RISC no interior do processador e **preservou** a interface que sustenta o software existente. Já o RISC adotou do CISC a densidade de código e modos de endereçamento mais ricos. O legado mais durável é a ideia de que o conjunto de instruções é um **contrato estável** entre hardware e software.
+O CISC não foi "derrotado" pelo RISC: Ele **absorveu** as ideias do RISC no interior do processador e **preservou** a interface que sustenta o software existente. Já o RISC adotou do CISC a densidade de código e modos de endereçamento mais ricos. O legado mais durável é a ideia de que o conjunto de instruções é um **contrato estável** entre hardware e software.
 
 ---
 ## Fontes
@@ -387,12 +384,10 @@ O CISC não foi "derrotado" pelo RISC: ele **absorveu** as ideias do RISC no int
 | 4 | BLEM, E.; MENON, J.; SANKARALINGAM, K. *Power Struggles: Revisiting the RISC vs. CISC Debate on Contemporary ARM and x86 Architectures*. HPCA, 2013. (buscar pelo título) | Mostra que a microarquitetura pesa mais que o conjunto de instruções (seção 1.5) |
 | 5 | BHANDARKAR, D.; CLARK, D. W. *Performance from Architecture: Comparing a RISC and a CISC with Similar Hardware Organization*. ASPLOS, 1991. (buscar pelo título) | Comparação direta entre RISC e CISC com organização de hardware semelhante |
 
-> **Nota:** os artigos 3, 4 e 5 estão sem link porque não pude confirmar um endereço estável. Conferir título, ano e dados de publicação antes de entregar.
-
 ---
 ### Referências gerais (apoio)
 
-Servem para consulta rápida e compreensão inicial dos conceitos. **Não substituem os livros e documentos oficiais.**
+Servem para consulta rápida e compreensão inicial dos conceitos (**Não substituem os livros e documentos oficiais**).
 
 | Referência | Link |
 |---|---|
